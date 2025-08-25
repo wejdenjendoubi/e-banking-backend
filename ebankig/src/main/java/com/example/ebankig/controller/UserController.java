@@ -10,28 +10,63 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Optional;
+import java.util.ArrayList;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+
 
 import com.example.ebankig.model.User;
 import com.example.ebankig.service.UserService;
+import com.example.ebankig.dto.UserDTO;
+import com.example.ebankig.repository.UserRepository;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "http://localhost:4200",  allowedHeaders = "*")
 
 public class UserController {
+
     private final UserService userService;
+    private final UserRepository userRepository;
 
-    public UserController(UserService userService) { this.userService = userService; }
+    public UserController(UserService userService, UserRepository userRepository) { this.userService = userService;
+    this.userRepository = userRepository; }
 
-    @GetMapping ("all")
-        public List<User> getAll() { return userService.getAllUsers(); }
+    @GetMapping("/all")
+    public List<User> getAll() { return userService.getAllUsers(); }
 
-    @GetMapping
-        ("/{login}") public User getById(@PathVariable String login) { return userService.getUserById(login); }
+    @GetMapping("/{login}")
+    public User getById(@PathVariable String login) { return userService.getUserById(login); }
 
-    @PostMapping("add")
-         public User save(@RequestBody User user) { return userService.saveUser(user); }
+    @PostMapping("/add")
+    public User save(@RequestBody User user) { return userService.saveUser(user); }
 
-    @DeleteMapping
-        ("/{login}") public void delete(@PathVariable String login) { userService.deleteUser(login); }
+    @DeleteMapping("/{login}")
+    public void delete(@PathVariable String login) { userService.deleteUser(login); }
+
+   @PostMapping("/login")
+    public ResponseEntity<Map<String, Object>> loginOrRegister(@RequestBody UserDTO userDTO) {
+        Map<String, Object> response = new HashMap<>();
+        Optional<User> existingUserOpt = userRepository.findByLogin(userDTO.getLogin());
+        User user;
+
+        if (existingUserOpt.isPresent()) {
+            user = existingUserOpt.get();
+            response.put("type", "existing");
+        } else {
+            user = new User();
+            user.setLogin(userDTO.getLogin());
+            user.setPassword(userDTO.getPassword());
+            user.setComptes(new ArrayList<>());
+            user = userRepository.save(user);
+            response.put("type", "new");
+        }
+
+        response.put("login", user.getLogin());
+        return ResponseEntity.ok(response);
+    }
 }

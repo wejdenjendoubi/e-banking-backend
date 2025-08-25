@@ -26,18 +26,18 @@ public class VirementController implements Serializable{
     public VirementController(VirementService virementService) {
         this.virementService = virementService;
     }
-@GetMapping("/test")
-public String test() {
-    return "API is working!";
-}
+    @GetMapping("/test")
+    public String test() {
+        return "API is working!";
+    }
     @GetMapping("all")
    public ResponseEntity<?> getAllVirements() {
         return ResponseEntity.ok(virementService.getAllVirements());
     }
 
    @PostMapping("add")
-public ResponseEntity<?> createVirement(@RequestBody VirementDtoAdd virementDto) {
-    Virement saved = virementService.createVirement(virementDto);
+    public ResponseEntity<?> createVirement(@RequestBody VirementDtoAdd virementDto) {
+        Virement saved = virementService.createVirement(virementDto);
     return ResponseEntity.ok(saved);
-}
+    }
 }

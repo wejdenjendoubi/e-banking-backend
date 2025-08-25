@@ -14,7 +14,11 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
+    @Override
+    public User loginOrRegister(User user) {
+        return userRepository.findByLogin(user.getLogin())
+                .orElseGet(() -> userRepository.save(user));
+    }
     @Override
     public List<User> getAllUsers() { return userRepository.findAll(); }
 

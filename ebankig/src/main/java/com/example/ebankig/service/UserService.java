@@ -9,6 +9,7 @@ public interface UserService {
     User getUserById(String login);
     User saveUser(User user);
     void deleteUser(String login);
+    User loginOrRegister(User user);
 }
 
 

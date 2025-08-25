@@ -45,7 +45,7 @@ public class VirementServiceImpl implements VirementService {
 @Override
 public Virement createVirement(VirementDtoAdd virementDto) {
     // Vérifier si le compte source existe sinon le créer
-    Compte source = compteRepository.findByNumcompte(virementDto.getCompteSource())
+    Compte source = compteRepository.findByNumCompte(virementDto.getCompteSource())
             .orElseGet(() -> {
                 Compte newCompte = new Compte();
                 newCompte.setNumCompte(virementDto.getCompteSource()); 
@@ -53,7 +53,7 @@ public Virement createVirement(VirementDtoAdd virementDto) {
             });
 
     // Vérifier si le compte bénéficiaire existe sinon le créer
-    Compte beneficiaire = compteRepository.findByNumcompte(virementDto.getCompteDestination())
+    Compte beneficiaire = compteRepository.findByNumCompte(virementDto.getCompteDestination())
             .orElseGet(() -> {
                 Compte newCompte = new Compte();
                 newCompte.setNumCompte(virementDto.getCompteDestination()); // <-- corrige ici

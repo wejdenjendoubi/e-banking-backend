@@ -35,10 +35,7 @@ public class CompteController {
         return compteService.getCompteById(id);
     }
 
-    @PostMapping("add")
-    public Compte createCompte(@RequestBody Compte compte) {
-        return compteService.saveCompte(compte);
-    }
+   
 
     @DeleteMapping("/{id}")
     public void deleteCompte(@PathVariable String id) {
