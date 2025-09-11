@@ -28,29 +28,29 @@ public class OperationController {
         this.service = service;
         this.compteService = compteService;
     }
-
-    // Récupérer les opérations par compte (ici on filtre par type de compte ou numéro)
-    @GetMapping("/byid/{compte}")
-    public List<Operation> getByCompte(@PathVariable String compte) {
-        return service.getAllOperations()
-                      .stream()
-                      .filter(op -> op.getCompte() != null &&
-                            (compte.equalsIgnoreCase(op.getCompte().getType()) || 
-                             compte.equals(op.getCompte().getNumCompte())))
-                      .collect(Collectors.toList());
-    }
-
     // Ajouter une nouvelle opération
     @PostMapping
     public Operation createOperation(@RequestBody Operation operation) {
         // Récupérer le compte lié à l’opération
-        Compte compte = compteService.getCompteByNumOrType(
-                            operation.getCompte().getNumCompte(), 
-                            operation.getCompte().getType());
+        Compte compte = compteService.getCompteById(
+                            operation.getCompte().getNumCompte());
         if (compte == null) {
             throw new RuntimeException("Compte non trouvé !");
         }
         operation.setCompte(compte);
         return service.saveOperation(operation);
     }
+
+    // Récupérer les opérations par compte (ici on filtre par type de compte ou numéro)
+    @GetMapping("/byid/{numCompte}")
+    public List<Operation> getByCompte(@PathVariable String compte) {
+        return service.getAllOperations()
+                      .stream()
+                      .filter(op -> op.getCompte() != null &&
+                            (compte.equalsIgnoreCase(op.getCompte().getNumCompte()) || 
+                             compte.equals(op.getCompte().getNumCompte())))
+                      .collect(Collectors.toList());
+    }
+
+    
 }
