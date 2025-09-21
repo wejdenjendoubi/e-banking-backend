@@ -9,4 +9,5 @@ public interface CompteService {
     Compte getCompteById(String numCompte);
     Compte saveCompte(Compte compte);
     void deleteCompte(String numCompte);
+    List<Compte> getComptesByUserLogin(String login);
 }

@@ -1,5 +1,6 @@
 package com.example.ebankig.model;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -19,6 +20,7 @@ public class Compte {
 
     @Column(nullable = false)
     private String agence;
+    private BigDecimal solde;
 
     // Plusieurs comptes appartiennent à un user
     @ManyToOne
@@ -33,38 +35,55 @@ public class Compte {
 
     public Compte() {}
 
-    public Compte(String numCompte, String agence, User user) {
+    
+
+    public Compte(String numCompte, String agence, BigDecimal solde, User user, List<Operation> operations) {
         this.numCompte = numCompte;
         this.agence = agence;
+        this.solde = solde;
         this.user = user;
+        this.operations = operations;
     }
 
-    // getters et setters
+
     public String getNumCompte() {
-        return numCompte;
+        return this.numCompte;
     }
+
     public void setNumCompte(String numCompte) {
         this.numCompte = numCompte;
     }
 
     public String getAgence() {
-        return agence;
+        return this.agence;
     }
+
     public void setAgence(String agence) {
         this.agence = agence;
     }
 
-    public User getUser() {
-        return user;
+    public BigDecimal getSolde() {
+        return this.solde;
     }
+
+    public void setSolde(BigDecimal solde) {
+        this.solde = solde;
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
     public void setUser(User user) {
         this.user = user;
     }
 
     public List<Operation> getOperations() {
-        return operations;
+        return this.operations;
     }
+
     public void setOperations(List<Operation> operations) {
         this.operations = operations;
     }
+    
 }

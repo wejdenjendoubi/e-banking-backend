@@ -26,4 +26,8 @@ public class CompteServiceImpl implements CompteService {
 
     @Override
     public void deleteCompte(String numCompte) { compteRepository.deleteById(numCompte); }
+    
+     public List<Compte> getComptesByUserLogin(String login) {
+        return compteRepository.findByUser_Login(login);
+    }
 }
